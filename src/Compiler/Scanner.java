@@ -1,5 +1,6 @@
 package src.Compiler;
 import src.Helper.Tuple;
+import src.Helper.Constants;
 
 
 public class Scanner {
@@ -35,8 +36,8 @@ public class Scanner {
             finished = true;
             switch (state)
             {
-                case INNUM: return new Tuple<>(currentContent.toString(), "Number");
-                case INID: return new Tuple<>(currentContent.toString(), "Identifier");
+                case INNUM: return new Tuple<>(currentContent.toString(), Constants.Scanner.TokeyType.NUMBER);
+                case INID: return new Tuple<>(currentContent.toString(), Constants.Scanner.TokeyType.IDENTIFIER);
                 //case INCOMMENT: return new Tuple<>(currentContent.toString(), "Identifier");
                 default: state = State.ERROR; return null;
             }
@@ -64,7 +65,7 @@ public class Scanner {
                         state = State.INCOMMENT;
                     } else if (!isWhiteSpace(extractedChar)) {
                         state = State.DONE;
-                        return new Tuple<>("" + extractedChar, "Special sympol");
+                        return new Tuple<>("" + extractedChar, Constants.Scanner.TokeyType.SPECIAL_SYMPOL);
                     }
 
 
@@ -96,7 +97,7 @@ public class Scanner {
                             inputCode.insert(0, extractedChar);
                             String token = currentContent.toString();
                             currentContent.setLength(0); //clear the buffer for new token
-                            return new Tuple<>(token, "Number");
+                            return new Tuple<>(token, Constants.Scanner.TokeyType.NUMBER);
                         }
 
                         break;
@@ -111,7 +112,7 @@ public class Scanner {
                             inputCode.insert(0, extractedChar);
                             String token = currentContent.toString();
                             currentContent.setLength(0); //clear the buffer for new token
-                            return new Tuple<>(token, "Identifier");
+                            return new Tuple<>(token, Constants.Scanner.TokeyType.IDENTIFIER);
                         }
 
                         break;
@@ -124,14 +125,14 @@ public class Scanner {
                             currentContent.append(extractedChar);
                             String token = currentContent.toString();
                             currentContent.setLength(0); //clear the buffer for new token
-                            return new Tuple<>(token, "Assign");
+                            return new Tuple<>(token, Constants.Scanner.TokeyType.ASSIGN);
                         }
                         else {
                             state = State.DONE;
                             inputCode.insert(0, extractedChar);
                             String token = currentContent.toString();
                             currentContent.setLength(0); //clear the buffer for new token
-                            return new Tuple<>(token, "Special sympol");
+                            return new Tuple<>(token, Constants.Scanner.TokeyType.SPECIAL_SYMPOL);
                         }
                     }
 
@@ -159,11 +160,11 @@ public class Scanner {
             token = this.step();
         }
 
-        if(token.y.equals("Identifier"))
+        if(token.y.equals(Constants.Scanner.TokeyType.IDENTIFIER))
         {
             for (String word : reservedWords)
                 if(token.x.equals(word)) {
-                    token.y = "Reserved word";
+                    token.y = Constants.Scanner.TokeyType.RESERVED_WORD;
                     break;
                 }
         }
