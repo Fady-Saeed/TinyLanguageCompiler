@@ -1,30 +1,26 @@
 package src;
 
-import src.Compiler.Scanner;
-import src.Helper.Tuple;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
-    public static void main(String[] argv)
+public class Main extends Application {
+
+    public static Stage sharedPrimaryStage;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("Gui/Gui.fxml"));
+        primaryStage.setTitle("Scanner");
+        primaryStage.setScene(new Scene(root, 600, 250));
+        primaryStage.show();
+        sharedPrimaryStage = primaryStage;
+    }
+
+    public static void main(String[] args) throws Exception
     {
-        Scanner scanner = new Scanner("{sample program in TINY language- computes factorial}\n" +
-                "read x;{input an integer}\n" +
-                "if 0<x then {don’t compute if x<=0}\n" +
-                "fact:=1;\n" +
-                "repeat\n" +
-                "fact:=fact*x;\n" +
-                "x:=x-1\n" +
-                "until x=0;\n" +
-                "write fact{output factorial of x}\n" +
-                "end");
-
-        Tuple token = scanner.next();
-        while (token != null)
-        {
-            System.out.println(token.x + " => " + token.y);
-            token = scanner.next();
-        }
-
-
-
+        launch(args);
     }
 }

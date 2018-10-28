@@ -11,8 +11,6 @@ public class Constants {
             public static String SPECIAL_SYMPOL = "special sympol";
             public static String ASSIGN = "assign";
             public static String RESERVED_WORD = "reserved word";
-
-
         }
     }
 }
