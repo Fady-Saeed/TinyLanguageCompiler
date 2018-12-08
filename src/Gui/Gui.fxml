@@ -39,7 +39,7 @@
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0">
                <children>
-                  <Label text="Output file path:">
+                  <Label text="Output directory:">
                      <VBox.margin>
                         <Insets left="15.0" top="10.0" />
                      </VBox.margin>

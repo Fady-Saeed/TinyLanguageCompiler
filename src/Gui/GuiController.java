@@ -9,7 +9,6 @@ import src.Helper.Tuple;
 import src.Main;
 
 import java.io.*;
-import java.util.Map;
 
 public class GuiController {
     @FXML public TextField inputPathTextField;
@@ -50,6 +49,7 @@ public class GuiController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Files", "*.*"),
                 new FileChooser.ExtensionFilter("TXT", "*.txt")
+
         );
 
         File file = fileChooser.showOpenDialog(Main.sharedPrimaryStage);

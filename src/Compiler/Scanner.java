@@ -8,7 +8,6 @@ public class Scanner {
     //to keep track of the input characters so far
     private StringBuilder currentContent;
     private StringBuilder inputCode;
-    private boolean finished;
 
     private enum State {
         START, INCOMMENT, INNUM, INID, INASSIGN, DONE, ERROR
@@ -26,25 +25,26 @@ public class Scanner {
         this.currentContent = new StringBuilder();
         this.inputCode = new StringBuilder(inputCode);
         state = State.START;
-        finished = false;
     }
 
     private Tuple<String, String> step()
     {
+
+        char extractedChar = inputCode.charAt(0);
+        inputCode.deleteCharAt(0);
+
         if (inputCode.length() == 0)
         {
-            finished = true;
+            String content = currentContent.toString();
+            currentContent = new StringBuilder("");
             switch (state)
             {
-                case INNUM: return new Tuple<>(currentContent.toString(), Constants.Scanner.TokeyType.NUMBER);
-                case INID: return new Tuple<>(currentContent.toString(), Constants.Scanner.TokeyType.IDENTIFIER);
+                case INNUM: return new Tuple<>(content, Constants.Scanner.TokeyType.NUMBER);
+                case INID: return new Tuple<>(content, Constants.Scanner.TokeyType.IDENTIFIER);
                 //case INCOMMENT: return new Tuple<>(currentContent.toString(), "Identifier");
                 default: state = State.ERROR; return null;
             }
         }
-
-        char extractedChar = inputCode.charAt(0);
-        inputCode.deleteCharAt(0);
 
         switch (state)
         {
@@ -140,7 +140,6 @@ public class Scanner {
 
         }
 
-
         return null;
 
 
@@ -154,7 +153,7 @@ public class Scanner {
 
         while(token == null)
         {
-            if(finished)
+            if(inputCode.length()==0)
                 return null;
 
             token = this.step();
@@ -174,10 +173,50 @@ public class Scanner {
     }
 
 
+    public Tuple<String, String> nextTop()
+    {
+
+        Tuple<String, String> token = null;
+
+        while(token == null)
+        {
+            if(inputCode.length()==0)
+                return null;
+
+            token = this.step();
+        }
+
+        if(token.y.equals(Constants.Scanner.TokeyType.IDENTIFIER))
+        {
+            for (String word : reservedWords)
+                if(token.x.equals(word)) {
+                    token.y = Constants.Scanner.TokeyType.RESERVED_WORD;
+                    break;
+                }
+        }
+
+
+        return token;
+    }
+
+
+
+    public Tuple<String, String> top()
+    {
+        Tuple<String, String> temp =  this.nextTop();
+        if(temp != null)
+        inputCode.insert(0,temp.x  + " ");
+        return temp;
+    }
+
     public String nextToken()
     {
         return this.next().y;
     }
+
+
+    public boolean isDone()
+    {return inputCode.length()==0;}
 
 
 
