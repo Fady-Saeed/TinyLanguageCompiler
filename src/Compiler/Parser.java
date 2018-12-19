@@ -1,5 +1,6 @@
 package src.Compiler;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import src.Helper.Constants;
 
@@ -273,20 +274,25 @@ public class Parser {
         int counter = 0;
         JSONObject result = new JSONObject();
         result.put("type", "stmt_sequence");
-        result.put(counter++, statement());
+        JSONArray arr = new JSONArray();
+        arr.add(statement());
 
         if(scanner.isDone())
+        {
+            result.put("children", arr);
             return result;
+        }
 
         while (scanner.top().x.equals(";"))
         {
 
             scanner.next();
-            result.put(counter++, statement());
+            arr.add(statement());
             if(scanner.isDone())
-                return result;
+                break;
         }
 
+        result.put("children", arr);
         return result;
     }
 
