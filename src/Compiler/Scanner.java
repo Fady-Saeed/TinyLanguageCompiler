@@ -30,8 +30,6 @@ public class Scanner {
     private Tuple<String, String> step()
     {
 
-        char extractedChar = inputCode.charAt(0);
-        inputCode.deleteCharAt(0);
 
         if (inputCode.length() == 0)
         {
@@ -39,12 +37,15 @@ public class Scanner {
             currentContent = new StringBuilder("");
             switch (state)
             {
-                case INNUM: return new Tuple<>(content, Constants.Scanner.TokeyType.NUMBER);
-                case INID: return new Tuple<>(content, Constants.Scanner.TokeyType.IDENTIFIER);
+                case INNUM: {currentContent.setLength(0); return new Tuple<>(content, Constants.Scanner.TokeyType.NUMBER);}
+                case INID: {currentContent.setLength(0); return new Tuple<>(content, Constants.Scanner.TokeyType.IDENTIFIER);}
                 //case INCOMMENT: return new Tuple<>(currentContent.toString(), "Identifier");
                 default: state = State.ERROR; return null;
             }
         }
+
+        char extractedChar = inputCode.charAt(0);
+        inputCode.deleteCharAt(0);
 
         switch (state)
         {
@@ -153,7 +154,7 @@ public class Scanner {
 
         while(token == null)
         {
-            if(inputCode.length()==0)
+            if(inputCode.toString().trim().length()==0 && currentContent.toString().trim().length()==0)
                 return null;
 
             token = this.step();
@@ -180,7 +181,7 @@ public class Scanner {
 
         while(token == null)
         {
-            if(inputCode.length()==0)
+            if(inputCode.toString().trim().length()==0 && currentContent.toString().trim().length()==0)
                 return null;
 
             token = this.step();
@@ -216,7 +217,7 @@ public class Scanner {
 
 
     public boolean isDone()
-    {return inputCode.length()==0;}
+    {return inputCode.toString().trim().length()==0 && currentContent.toString().trim().length()==0;}
 
 
 

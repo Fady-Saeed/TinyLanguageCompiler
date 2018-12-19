@@ -29,7 +29,8 @@ public class Main extends Application {
                 "x := x - 1\n" +
                 "until x = 0;\n" +
                 "write fact { output factorial of x }\n" +
-                "end");
+                "end;\n" +
+                "read x");
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         String jsonOutput = gson.toJson(parser.program());

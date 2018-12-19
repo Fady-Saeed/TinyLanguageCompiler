@@ -270,7 +270,10 @@ public class Parser {
 
     JSONObject stmt_sequence()
     {
-        JSONObject result = statement();
+        int counter = 0;
+        JSONObject result = new JSONObject();
+        result.put("type", "stmt_sequence");
+        result.put(counter++, statement());
 
         if(scanner.isDone())
             return result;
@@ -279,13 +282,7 @@ public class Parser {
         {
 
             scanner.next();
-            JSONObject rhs = statement();
-            JSONObject temp = result;
-            result = new JSONObject();
-            result.put("type", "stmt_sequence");
-            result.put("lhs", temp);
-            result.put("rhs", rhs);
-
+            result.put(counter++, statement());
             if(scanner.isDone())
                 return result;
         }
