@@ -10,7 +10,11 @@ import javafx.stage.Stage;
 import org.json.simple.parser.JSONParser;
 import src.Compiler.Parser;
 import src.Compiler.Scanner;
+import src.Gui.SyntaxTree;
 import src.Helper.Tuple;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class Main extends Application {
 
@@ -34,7 +38,10 @@ public class Main extends Application {
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         String jsonOutput = gson.toJson(parser.program());
-        System.out.println(jsonOutput);
+
+        BufferedWriter outputBR = new BufferedWriter(new FileWriter("./src/SyntaxTreeDrawer/dest/js/SyntaxTree.js"));
+        outputBR.write("let json = " + jsonOutput);
+        outputBR.close();
 
         Parent root = FXMLLoader.load(getClass().getResource("Gui/Gui.fxml"));
         primaryStage.setTitle("Scanner");
