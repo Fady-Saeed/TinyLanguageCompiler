@@ -93,7 +93,8 @@ public class GuiController {
 
             outputBR.close();
 
-            AlertBox.display("File scanned successfully" , "Scanned successfully");
+            SyntaxTree.display();
+//            AlertBox.display("File scanned successfully" , "Scanned successfully");
 
         }
 
