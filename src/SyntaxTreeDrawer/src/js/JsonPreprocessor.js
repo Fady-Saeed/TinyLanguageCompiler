@@ -152,11 +152,15 @@ class JsonPreprocessor {
                 }
                 break;
             case types.factor:
-                node = {
-                    id: currentCounter++,
-                    name: ((isNaN(Number(currentNode.value))) ? `${factorTypes.id}` : `${factorTypes.const}`) + `(${currentNode.value})`,
-                    no_parent: !hasParent,
-                    container: containers.ellipse
+                if(typeof currentNode.value === "object"){
+                    node = this.generateNode(currentNode.value)
+                }else{
+                    node = {
+                        id: currentCounter++,
+                        name: ((isNaN(Number(currentNode.value))) ? `${factorTypes.id}` : `${factorTypes.const}`) + `(${currentNode.value})`,
+                        no_parent: !hasParent,
+                        container: containers.ellipse
+                    }
                 }
                 break;
             case types.stmt_sequence:
