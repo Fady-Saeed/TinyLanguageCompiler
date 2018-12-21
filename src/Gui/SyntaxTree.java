@@ -11,6 +11,7 @@ import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import src.Main;
 
 import java.io.File;
 import java.net.URL;
@@ -35,6 +36,7 @@ public class SyntaxTree {
         browser.getEngine().setOnAlert((WebEvent<String> wEvent) -> {
             System.out.println("JS alert() message: " + wEvent.getData() );
         });
+        webEngine.executeScript("let json = "+Main.json);
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(browser,closeButton);
